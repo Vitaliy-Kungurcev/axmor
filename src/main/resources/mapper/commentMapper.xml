@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="axmor.test_task.dao.CommentMapper">
+    <resultMap type="comment" id="result">
+        <id property="id" column="id"/>
+        <result property="problemId" column="problemId"/>
+        <result property="author" column="author"/>
+        <result property="status" column="status"/>
+        <result property="text" column="text"/>
+        <result property="dateTime" column="dateTime"/>
+    </resultMap>
+
+<!--Запрос из базы всех коммментариев по id-проблемы-->
+    <select id="getAllComments" parameterType="int" resultType="comment" resultMap="result">
+        SELECT * FROM COMMENTS WHERE PROBLEMID = #{problemId}
+    </select>
+
+<!--    Добавление в базу нового комменария-->
+    <insert id="insertComment" parameterType="comment" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO COMMENTS(PROBLEMID, AUTHOR, STATUS, TEXT, DATETIME)
+        VALUES (#{problemId}, #{author}, #{status}, #{text}, #{dateTime})
+    </insert>
+
+
+</mapper>

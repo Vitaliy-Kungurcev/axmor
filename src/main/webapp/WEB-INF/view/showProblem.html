@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org " lang="">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Show problem</title>
+</head>
+
+<body>
+<div class="container">
+    <p>
+        <b><a th:text="${problem.getName()}"> </a></b>
+    </p>
+
+    <p><b> Status: </b> <a th:text="${problem.getStatus()}"> </a></p>
+
+    <p><b>StartDate: </b> <a th:text="${problem.getDateTime()}"> </a></p>
+
+    <p><b>Author: </b><a th:text="${problem.getAuthor()}"> </a></p>
+
+    <b>Description: </b><br>
+    <p><a th:text="${problem.getDescription()}"> </a></p>
+    <br>
+
+    <b>Comments:</b><br>
+    <div th:each="comment : ${listComments}">
+        <div class="card">
+            <div class="container">
+                Update by <a th:text="${comment.getAuthor()}"> </a> <a th:text="${comment.getDateTime()}"> </a>
+                <p>
+
+                <p><em>
+                    <mark>Status changed/left to <b><a th:text="${comment.getStatus()}"> </a></b></mark>
+                </em></p>
+
+                <p><a th:text="${comment.getText()}"> </a></p>
+
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <form th:method="POST" th:action="@{/problems/saveComment}" th:object="${comment}">
+
+        <div class="card-footer">
+            <p><b> Add comment: </b></p>
+
+            <p>Status: <select name="status">
+                <option>Resolved</option>
+                <option>Closed</option>
+            </select></p>
+
+            <input type="hidden" th:field="*{problemId}" id="problemId"/>
+            <p>
+                <label for="author">Author: </label>
+                <input type="text" th:field="*{author}" id="author" minlength="2" maxlength="40" autofocus required/>
+            <p>
+                <label for="text">Text: </label><br>
+                <textarea name="comments" cols="148" rows="3" th:field="*{text}" class="maxWidth" minlength="2"
+                          maxlength="1000" autofocus required></textarea>
+            <p>
+                <input type="submit" value="Add"/>
+
+        </div>
+
+        <input type="button" class="btn btn-primary" onclick="window.location.href='/axmor/problems/'"
+               value="Main"/>
+    </form>
+    <br><br><br>
+</div>
+
+<!--Для коррекного отображения валидации на всех браузерах-->
+<script src="jquery.h5validate.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('form').h5Validate();
+    });
+</script>
+</body>
+</html>

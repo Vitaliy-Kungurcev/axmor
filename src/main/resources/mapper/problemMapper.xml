@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="axmor.test_task.dao.ProblemMapper">
+    <resultMap type="problem" id="result">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <result property="author" column="author"/>
+        <result property="description" column="description"/>
+        <result property="comments" column="comments"/>
+        <result property="date" column="date"/>
+        <result property="dateTime" column="dateTime"/>
+    </resultMap>
+
+    <!--Запрос из базы всех проблем для отображения на главной странице-->
+    <select id="getAllProblems" resultType="problem" resultMap="result">
+        select * FROM PROBLEMS order by DATETIME desc
+    </select>
+
+    <!--Сохранение в базе новой проблемы-->
+    <insert id="insertProblem" parameterType="problem" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO PROBLEMS(NAME, STATUS, AUTHOR, DESCRIPTION, DATE, DATETIME)
+        VALUES (#{name}, #{status}, #{author}, #{description}, #{date}, #{dateTime})
+    </insert>
+
+    <!--Запрос  проблемы по id-->
+    <select id="findById" parameterType="int" resultType="problem" resultMap="result">
+        SELECT * FROM PROBLEMS WHERE ID = #{problemId}
+    </select>
+
+    <!--Обновление проблемы в базе-->
+    <update id="updateProblem" parameterType="problem">
+        UPDATE PROBLEMS SET STATUS=#{status} WHERE ID = #{id}
+    </update>
+
+</mapper>
